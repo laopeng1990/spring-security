@@ -23,8 +23,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-        UserDetails user = User.withUsername("user").password("auth").roles("USER").build();
-        manager.createUser(user);
+        UserDetails userWpf = User.withUsername("wpf").password("auth").roles("USER").build();
+        UserDetails userLaopeng = User.withUsername("laopeng").password("auth").roles("USER").build();
+        manager.createUser(userWpf);
+        manager.createUser(userLaopeng);
         UserDetails admin = User.withUsername("admin").password("auth").roles("ADMIN").build();
         manager.createUser(admin);
         return manager;
@@ -35,6 +37,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index").permitAll()
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("/admin").hasRole("amdin")
-                .anyRequest().authenticated().and().formLogin();
+                .anyRequest().authenticated().and().rememberMe().key("wpfLaopeng").and().formLogin();
     }
 }
